@@ -5,7 +5,7 @@ const passport = require('passport');
 
 //Load Profile model
 const Profile = require('../../models/Profile');
-//const User = require('../../models/User');
+const User = require('../../models/User');
 
 const validateProfileInput = require('../../validation/profile');
 const validateExprienceInput = require('../../validation/experience');
@@ -239,6 +239,19 @@ router.delete('/education/:edu_id', passport.authenticate('jwt', {session:false}
             profile.save().then(profile => res.json(profile));
         })
         .catch(err => res.status(404).json(err));
+});
+
+// @route   DELETE api/profile/:edu_id
+// @desc    Delete user and profile
+// @access  Private
+router.delete('/', passport.authenticate('jwt', {session:false}), (req, res) => {
+    Profile.findOneAndRemove({ user: req.user.id })
+        .then(() => {
+            // After removing the profile, I also delete the user object
+            User.findOneAndRemove({ user: req.user.id })
+                .then(() => res.json({ success: true }))
+                .catch(err => res.status(404).json(err));
+        }).catch(err => res.status(404).json(err));
 });
 
 module.exports = router;
