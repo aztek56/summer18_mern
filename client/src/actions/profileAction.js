@@ -2,9 +2,9 @@ import axios from 'axios';
 
 import {
     GET_PROFILE,
-    GET_PROFILES,
+    //GET_PROFILES,
     PROFILE_LOADING,
-    PROFILE_NOT_FOUND,
+    //PROFILE_NOT_FOUND,
     CLEAR_CURRENT_PROFILE,
     GET_ERRORS } from "./types";
 

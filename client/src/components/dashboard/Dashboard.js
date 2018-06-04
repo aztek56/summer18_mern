@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profileAction';
-import TextFieldGroup from '../common/TextFieldGroup';
 import Spinner from '../common/Spinner';
 
 class Dashboard extends Component {
