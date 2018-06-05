@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import {
-    //POST_LOADING,
-    //GET_POSTS,
+    POST_LOADING,
+    GET_POSTS,
     //GET_POST,
     ADD_POST,
     //DELETE_POST,
@@ -25,3 +25,28 @@ export const addPost = (postData) => dispatch => {
             });
         });
 };
+
+// Get post
+export const getPosts = () => dispatch => {
+    dispatch(setPostLoading());
+    axios.get('/api/posts')
+        .then(res => {
+            dispatch({
+                type: GET_POSTS,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_POSTS,
+                payload: null
+            });
+        });
+};
+
+// Set loading state
+export const setPostLoading = () => {
+    return {
+        type: POST_LOADING
+    }
+}
