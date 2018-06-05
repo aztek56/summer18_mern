@@ -21,11 +21,15 @@ router.get('/test', (req, res) => res.json({msg: "posts works!"}));
 // @access  Public
 router.get('/', (req,res) => {
     Post.find()
-        .sort({ date: -1 })
-        .then(posts => res.json(posts))
-        .catch(
-            res.status(404).json({ nopostfound: 'No posts found'})
-        );
+        .sort({ date: "desc" })
+        .then(posts => {
+            if(!posts) {
+                errors.nopostfound = 'There are no posts found';
+                return res.status(404).json();
+            }
+            res.json(posts);
+        })
+        .catch(err => res.status(404).json({ nopostfound: 'No posts found'}));
 });
 
 // @route   GET api/posts/:id
@@ -44,7 +48,7 @@ router.get('/:id', (req,res) => {
 // @access  Private
 router.delete('/:id', passport.authenticate('jwt', { session: false}), (req,res) => {
     const errors = {};
-    Profile.findOne({ user: req.user.id})
+    Profile.findOne({ user: req.user.id })
         .then(profile => {
             if(!profile) {
                 errors.noprofile = 'There is no profile for this user';

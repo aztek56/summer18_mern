@@ -26,7 +26,7 @@ export const addPost = (postData) => dispatch => {
         });
 };
 
-// Get post
+// Get all post
 export const getPosts = () => dispatch => {
     dispatch(setPostLoading());
     axios.get('/api/posts')
