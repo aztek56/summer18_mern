@@ -4,11 +4,27 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-
+import { deletePost, addLike, removeLike } from '../../actions/postAction';
 
 class PostItem extends Component {
     onDeleteClick(postId) {
-        console.log(postId);
+        this.props.deletePost(postId);
+    }
+
+    onLikeClick(postId) {
+        this.props.addLike(postId);
+    }
+
+    onUnlikeClick(postId) {
+        this.props.removeLike(postId);
+    }
+
+    findUserLike(likes) {
+        const { auth } = this.props;
+        if(likes.filter(like => like.user === auth.user.id).length > 0) {
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -28,11 +44,17 @@ class PostItem extends Component {
                     </div>
                     <div className="col-md-10">
                         <p className="lead">{post.text}</p>
-                        <button type="button" className="btn btn-light mr-1">
-                            <i className="text-info fas fa-thumbs-up"></i>
+                        <button type="button"
+                                onClick={this.onLikeClick.bind(this, post._id)}
+                                className="btn btn-light mr-1">
+                            <i className={classnames('fas fa-thumbs-up', {
+                                'text-info' : this.findUserLike(post.likes)
+                            })} />
                             <span className="badge badge-light">{post.likes.length}</span>
                         </button>
-                        <button type="button" className="btn btn-light mr-1">
+                        <button type="button"
+                                onClick={this.onUnlikeClick.bind(this, post._id)}
+                                className="btn btn-light mr-1">
                             <i className="text-secondary fas fa-thumbs-down"></i>
                         </button>
                         <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
@@ -53,6 +75,9 @@ class PostItem extends Component {
 };
 
 PostItem.propTypes = {
+    addLike: PropTypes.func.isRequired,
+    removeLike: PropTypes.func.isRequired,
+    deletePost: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
 };
@@ -61,4 +86,4 @@ const mapStateToProps = state => ({
    auth: state.auth
 });
 
-export default connect(mapStateToProps)(PostItem);
+export default connect(mapStateToProps, { deletePost, addLike, removeLike })(PostItem);

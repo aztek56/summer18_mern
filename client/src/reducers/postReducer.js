@@ -3,7 +3,7 @@ import {
     GET_POSTS,
     GET_POST,
     ADD_POST,
-    //DELETE_POST,
+    DELETE_POST,
     GET_ERRORS
 } from "../actions/types";
 
@@ -31,6 +31,11 @@ export default function(state = initialState, action) {
                 ...state,
                 posts: action.payload,
                 loading: false
+            };
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post._id !== action.payload)
             };
         case POST_LOADING:
             return {
