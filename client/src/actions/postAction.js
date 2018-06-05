@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 import {
-    POST_LOADING,
-    GET_POSTS,
-    GET_POST,
+    //POST_LOADING,
+    //GET_POSTS,
+    //GET_POST,
     ADD_POST,
-    DELETE_POST,
+    //DELETE_POST,
     GET_ERRORS
 } from "./types";
 
