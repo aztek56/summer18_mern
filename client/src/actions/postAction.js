@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
     POST_LOADING,
     GET_POSTS,
-    //GET_POST,
+    GET_POST,
     ADD_POST,
     DELETE_POST,
     GET_ERRORS
@@ -44,6 +44,24 @@ export const getPosts = () => dispatch => {
         });
 };
 
+// Get post
+export const getPost = (idPost) => dispatch => {
+    dispatch(setPostLoading());
+    axios.get(`/api/posts/${idPost}`)
+        .then(res => {
+            dispatch({
+                type: GET_POST,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_POST,
+                payload: null
+            });
+        });
+};
+
 // Delete Post
 export const deletePost = (idPost) => dispatch => {
     axios.post(`/api/posts/${idPost}`)
@@ -51,6 +69,23 @@ export const deletePost = (idPost) => dispatch => {
             dispatch({
                 type: DELETE_POST,
                 payload: idPost
+            });
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            });
+        });
+};
+
+// Add comment
+export const addComment = (idPost, commentData) => dispatch => {
+    axios.post(`/api/posts/comment/${idPost}`, commentData)
+        .then(res => {
+            dispatch({
+                type: GET_POST,
+                payload: res.data
             });
         })
         .catch(err => {
