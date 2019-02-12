@@ -4,3 +4,4 @@ workspace.xml
 /config/keys_dev.js
 .env.development
 .env.production
+*package-lock.json
